@@ -24,5 +24,13 @@ func main() {
 		})
 	})
 
+	r.GET("/user", func(ctx *gin.Context) {
+		id := ctx.Query("id")
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "creating of the user",
+			"id":      id,
+		})
+	})
+
 	r.Run(":8080")
 }
