@@ -6,6 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Body struct {
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+}
+
 func main() {
 	r := gin.Default()
 
@@ -29,6 +34,21 @@ func main() {
 		ctx.JSON(http.StatusOK, gin.H{
 			"message": "creating of the user",
 			"id":      id,
+		})
+	})
+
+	r.POST("/add/user", func(ctx *gin.Context) {
+		var requestBody Body
+		err := ctx.ShouldBindJSON(&requestBody)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Error": err.Error(),
+			})
+			return
+		}
+		ctx.JSON(http.StatusCreated, gin.H{
+			"user.name": requestBody.Name,
+			"user.age":  requestBody.Age,
 		})
 	})
 
